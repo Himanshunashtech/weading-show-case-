@@ -419,18 +419,19 @@ function Footer() {
 function Index() {
   return (
     <div id="top" className="min-h-screen bg-background">
+      <AmbientAudio />
       <Header />
       <main>
         <Hero />
-        <Intro />
-        <ThreeCards />
-        <ElegantSection />
-        <StartPlanning />
-        <Destination />
-        <Testimonials />
-        <Articles />
-        <Ceremony />
-        <Appointment />
+        <Reveal><Intro /></Reveal>
+        <Reveal><ThreeCards /></Reveal>
+        <Reveal><ElegantSection /></Reveal>
+        <Reveal><StartPlanning /></Reveal>
+        <Reveal><Destination /></Reveal>
+        <Reveal><Testimonials /></Reveal>
+        <Reveal><Articles /></Reveal>
+        <Reveal><Ceremony /></Reveal>
+        <Reveal><Appointment /></Reveal>
       </main>
       <Footer />
     </div>
