@@ -89,9 +89,13 @@
   .tracking-widest-xl { letter-spacing: 0.35em; }
 }
 
+@utility tracking-widest-xl { letter-spacing: 0.35em; }
+
 @utility btn-outline {
-  @apply inline-flex items-center justify-center border border-foreground/40 text-foreground uppercase tracking-widest-xl text-xs px-8 py-3 transition hover:bg-foreground hover:text-background;
+  @apply inline-flex items-center justify-center border border-foreground/40 text-foreground uppercase text-xs px-8 py-3 transition hover:bg-foreground hover:text-background;
+  letter-spacing: 0.35em;
 }
 @utility btn-ghost-light {
-  @apply inline-flex items-center justify-center border border-white/70 text-white uppercase tracking-widest-xl text-xs px-8 py-3 transition hover:bg-white hover:text-foreground;
+  @apply inline-flex items-center justify-center border border-white/70 text-white uppercase text-xs px-8 py-3 transition hover:bg-white hover:text-foreground;
+  letter-spacing: 0.35em;
 }
