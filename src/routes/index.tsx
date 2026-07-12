@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import hero from "@/assets/hero.jpg";
+import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 import portfolio from "@/assets/portfolio.jpg";
 import venues from "@/assets/venues.jpg";
 import services from "@/assets/services.jpg";
@@ -11,10 +16,35 @@ import article2 from "@/assets/article2.jpg";
 import article3 from "@/assets/article3.jpg";
 import logo from "@/assets/logo.png";
 import { Facebook, Instagram, Youtube, Search, Phone, Mail, Menu, ArrowUp } from "lucide-react";
+import { AmbientAudio } from "@/components/AmbientAudio";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
+};
+
+function Reveal({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  return (
+    <motion.div
+      className={className}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.25 }}
+      variants={{
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] } },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 const navLeft = ["About", "Testimonials", "Services"];
 const navRight = ["Portfolio", "Venues", "Contact"];
@@ -62,15 +92,63 @@ function Header() {
 }
 
 function Hero() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const textRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!textRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.to(textRef.current, {
+        yPercent: 30,
+        opacity: 0.4,
+        ease: "none",
+        scrollTrigger: { trigger: textRef.current, start: "top top", end: "bottom top", scrub: true },
+      });
+      if (videoRef.current) {
+        gsap.to(videoRef.current, {
+          scale: 1.15,
+          ease: "none",
+          scrollTrigger: { trigger: videoRef.current, start: "top top", end: "bottom top", scrub: true },
+        });
+      }
+    });
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section className="relative h-[88vh] min-h-[600px] w-full overflow-hidden">
-      <img src={hero} alt="Luxury Indian wedding couple" className="absolute inset-0 h-full w-full object-cover" width={1920} height={1280} />
-      <div className="absolute inset-0 bg-black/20" />
-      <div className="relative z-10 flex h-full items-center justify-center px-6">
+      <video
+        ref={videoRef}
+        src={heroVideo.url}
+        poster={hero}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover will-change-transform"
+      />
+      <div className="absolute inset-0 bg-black/35" />
+      <motion.div
+        ref={textRef}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 flex h-full items-center justify-center px-6"
+      >
         <h1 className="font-script text-white text-center text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight drop-shadow-lg max-w-6xl">
-          Luxury Weddings In India, Designed Just For You
+          {"Luxury Weddings In India, Designed Just For You".split(" ").map((w, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1, delay: 0.3 + i * 0.09, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-block mr-[0.25em]"
+            >
+              {w}
+            </motion.span>
+          ))}
         </h1>
-      </div>
+      </motion.div>
     </section>
   );
 }
