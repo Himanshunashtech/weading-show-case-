@@ -1,10 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import hero from "@/assets/hero.jpg";
-import heroVideo from "@/assets/hero-bg.mp4.asset.json";
+import heroVideo from "@/assets/hero-bg.mp4";
 import portfolio from "@/assets/portfolio.jpg";
 import venues from "@/assets/venues.jpg";
 import services from "@/assets/services.jpg";
@@ -19,11 +18,6 @@ import { Facebook, Instagram, Youtube, Search, Phone, Mail, Menu, ArrowUp } from
 import { AmbientAudio } from "@/components/AmbientAudio";
 
 gsap.registerPlugin(ScrollTrigger);
-
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
 
 function Reveal({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   return (
@@ -115,7 +109,7 @@ function Hero() {
     <section className="relative h-[88vh] min-h-[600px] w-full overflow-hidden">
       <video
         ref={videoRef}
-        src={heroVideo.url}
+        src={heroVideo}
         poster={hero}
         autoPlay
         muted
@@ -412,7 +406,7 @@ function Footer() {
   );
 }
 
-function Index() {
+export default function Home() {
   return (
     <div id="top" className="min-h-screen bg-background">
       <AmbientAudio />
